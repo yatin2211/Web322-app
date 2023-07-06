@@ -142,10 +142,6 @@ app.get("/posts", (req, res) => {
   }
 });
 
-app.get("/posts/add", (req, res) => {
-  res.render("addPost");
-});
-
 app.post("/posts/add", upload.single("featureImage"), (req, res) => {
   let streamUpload = (req) => {
     return new Promise((resolve, reject) => {
@@ -188,6 +184,9 @@ app.post("/posts/add", upload.single("featureImage"), (req, res) => {
     });
 });
 
+app.get("/posts/add", (req, res) => {
+  res.render("addPost");
+});
 app.get("/post/:value", (req, res) => {
   blogService
     .getPostById(req.params.value)
