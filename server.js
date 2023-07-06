@@ -28,7 +28,7 @@ const {
   getPostById,
   getPostsByCategory,
   getPostsByMinDate,
-} = require("./blog-service");
+} = require("./blog-service.js");
 
 
 const app = express();
