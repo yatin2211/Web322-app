@@ -117,7 +117,7 @@ app.get("/blog", async (req, res) => {
 
 app.get("/posts", (req, res) => {
   if (req.query.category) {
-    getPostsByCategory(req.query.category)
+    blogData.getPostsByCategory(req.query.category)
       .then((data) => {
         res.render("posts", { posts: data });
       })
@@ -125,7 +125,7 @@ app.get("/posts", (req, res) => {
         res.render("posts", { message: "no results" });
       });
   } else if (req.query.minDate) {
-    getPostsByMinDate(req.query.minDate)
+    blogData.getPostsByMinDate(req.query.minDate)
       .then((data) => {
         res.render("posts", { posts: data });
       })
@@ -133,7 +133,7 @@ app.get("/posts", (req, res) => {
         res.render("posts", { message: "no results" });
       });
   } else {
-    getAllPosts()
+    blogData.getAllPosts()
       .then((data) => {
         res.render("posts", { posts: data });
       })
@@ -199,8 +199,9 @@ app.get("/post/:value", (req, res) => {
     });
 });
 
+
 app.get("/categories", (req, res) => {
-  getCategories()
+  blogData.getCategories()
     .then((data) => {
       res.render("categories", { categories: data });
     })
@@ -209,33 +210,33 @@ app.get("/categories", (req, res) => {
     });
 });
 
-app.get('/blog/:id', async (req, res) => {
+app.get("/blog/:id", async (req, res) => {
   let viewData = {};
-  try{
-      let posts = [];
-      if(req.query.category){
-          posts = await blogData.getPublishedPostsByCategory(req.query.category);
-      }else{
-          posts = await blogData.getPublishedPosts();
-      }
-      posts.sort((a,b) => new Date(b.postDate) - new Date(a.postDate));
-      viewData.posts = posts;
-  }catch(err){
-      viewData.message = "no results";
+  try {
+    let posts = [];
+    if (req.query.category) {
+      posts = await blogData.getPublishedPostsByCategory(req.query.category);
+    } else {
+      posts = await blogData.getPublishedPosts();
+    }
+    posts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
+    viewData.posts = posts;
+  } catch (err) {
+    viewData.message = "no results";
   }
-  try{
-      viewData.post = await blogData.getPostById(req.params.id);
-  }catch(err){
-      viewData.message = "no results"; 
+  try {
+    viewData.post = await blogData.getPostById(req.params.id);
+  } catch (err) {
+    viewData.message = "no results";
   }
-  try{
-      let categories = await blogData.getCategories();
-      viewData.categories = categories;
-  }catch(err){
-      viewData.categoriesMessage = "no results";
+  try {
+    let categories = await blogData.getCategories();
+    viewData.categories = categories;
+  } catch (err) {
+    viewData.categoriesMessage = "no results";
   }
 
-  res.render('blog', { data: viewData });
+  res.render("blog", { data: viewData });
 });
 
 app.listen(HTTP_PORT, () => {
