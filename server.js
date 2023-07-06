@@ -241,5 +241,3 @@ app.get('/blog/:id', async (req, res) => {
 app.listen(HTTP_PORT, () => {
   console.log(`Server is listening on port ${HTTP_PORT}`);
 });
-
-Please note that I’ve maintained the original structure and logic of the code, but I removed the comments as per your request.
