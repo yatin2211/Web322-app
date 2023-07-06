@@ -125,6 +125,18 @@ const addPost = (postData) => {
     postDate: new Date().toISOString().slice(0, 10), // Format: YYYY-MM-DD
   };
 
+  function getPublishedPostsByCategory(category) {
+    return new Promise((resolve, reject) => {
+        const filteredPosts = posts.filter(post => post.category == category && post.published === true);
+
+        if (filteredPosts.length > 0) {
+            resolve(filteredPosts);
+        } else {
+            reject("no results returned");
+        }
+    })
+}
+
   posts.push(post);
   return post;
 };
@@ -138,5 +150,6 @@ module.exports = {
   getPostsByCategory,
   getPostsByMinDate,
   getPostById,
+  getPublishedPostsByCategory,
   addPost,
 };
