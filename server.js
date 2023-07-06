@@ -6,7 +6,7 @@
  *
  * Name: __________Yatin rana___________ Student ID: _____167501212_________ Date:7/6/23 ________________
  *
- * Cyclic Web App URL:https://unusual-teal-waistcoat.cyclic.app/blog
+ * Cyclic Web App URL:https://unusual-teal-waistcoat.cyclic.app/about
  *
  * GitHub Repository URL: __https://github.com/yatin2211/Web322-app_____
  *
@@ -33,10 +33,9 @@ const {
 
 const app = express();
 
-// Using the 'public' folder as our static folder
 app.use(express.static("public"));
 
-// This will add the property "activeRoute" to "app.locals" whenever the route changes
+
 app.use(function (req, res, next) {
   let route = req.path.substring(1);
   app.locals.activeRoute =
@@ -48,13 +47,11 @@ app.use(function (req, res, next) {
   next();
 });
 
-// Register handlebars as the rendering engine for views
+
 app.engine(
   ".hbs",
   exphbs.engine({
     extname: ".hbs",
-    // Handlebars custom helper to create active navigation links
-    // Usage: {{#navLink "/about"}}About{{/navLink}}
     helpers: {
       navLink: function (url, options) {
         return (
@@ -67,8 +64,7 @@ app.engine(
           "</a></li>"
         );
       },
-      // Handlebars custom helper to check for equality
-      // Usage: {{#equal value1 value2}}...{{/equal}}
+    
       equal: function (lvalue, rvalue, options) {
         if (arguments.length < 3)
           throw new Error("Handlebars Helper equal needs 2 parameters");
@@ -88,29 +84,26 @@ app.set("view engine", ".hbs");
 
 // Configuring Cloudinary
 cloudinary.config({
-  cloud_name: "your_cloud_name",
-  api_key: "your_api_key",
-  api_secret: "your_api_secret",
+  cloud_name: "dis6og4lc",
+  api_key: "145446994168569",
+  api_secret: "SBVfa_1AV6fyYyaoputexhGiqXg",
   secure: true,
 });
 
-// Variable without any disk storage
 const upload = multer();
 
-// Configuring the port
+
 const HTTP_PORT = process.env.PORT || 8080;
 
-// ========== Home Page Route ==========
 app.get("/", (req, res) => {
   res.redirect("/blog");
 });
 
-// ========== About Page Route ==========
+
 app.get("/about", (req, res) => {
   res.render("about");
 });
 
-// ========== Blog Page Route ==========
 app.get("/blog", async (req, res) => {
   // Declare an object to store properties for the view
   let viewData = {};
@@ -148,7 +141,7 @@ app.get("/blog", async (req, res) => {
   res.render("blog", { data: viewData });
 });
 
-// ========== Posts Page Route ==========
+
 app.get("/posts", (req, res) => {
   // Checking if a category was provided
   if (req.query.category) {
@@ -187,14 +180,13 @@ app.get("/posts", (req, res) => {
   }
 });
 
-// ========== Add Post Page Route (GET) ==========
+
 app.get("/posts/add", (req, res) => {
   res.render("addPost");
 });
 
-// ========== Add Post Page Route (POST) ==========
+
 app.post("/posts/add", upload.single("featureImage"), (req, res) => {
-  // Configuring cloudinary image uploading
   let streamUpload = (req) => {
     return new Promise((resolve, reject) => {
       let stream = cloudinary.uploader.upload_stream((error, result) => {
@@ -214,13 +206,13 @@ app.post("/posts/add", upload.single("featureImage"), (req, res) => {
     return result;
   }
 
-  // Once the upload is completed, we store the other form data in the object
+  
   upload(req)
     .then((uploaded) => {
       req.body.featureImage = uploaded.url;
       let postObject = {};
 
-      // Add it Blog Post before redirecting to /posts
+      
       postObject.body = req.body.body;
       postObject.title = req.body.title;
       postObject.postDate = new Date().toISOString().slice(0, 10);
@@ -228,35 +220,31 @@ app.post("/posts/add", upload.single("featureImage"), (req, res) => {
       postObject.featureImage = req.body.featureImage;
       postObject.published = req.body.published;
 
-      // Adding the post if everything is okay
-      // Only
-
-      // Adding the post if everything is okay
-      // Only add the post if the entries make sense
+      
       if (postObject.title) {
         addPost(postObject);
       }
       res.redirect("/posts");
     })
-    // Error Handling
+   
     .catch((err) => {
       res.send(err);
     });
 });
 
-// ========== Find a post by ID Route ==========
+
 app.get("/post/:value", (req, res) => {
   getPostById(req.params.value)
     .then((data) => {
       res.send(data);
     })
-    // Error Handling
+    // Error Handler
     .catch((err) => {
       res.send(err);
     });
 });
 
-// ========== Categories Page Route ==========
+
 app.get("/categories", (req, res) => {
   getCategories()
     .then((data) => {
@@ -268,7 +256,7 @@ app.get("/categories", (req, res) => {
     });
 });
 
-// ========== Blog By ID Page Route ==========
+
 app.get('/blog/:id', async (req, res) => {
   // Declare an object to store properties for the view
   let viewData = {};
@@ -308,14 +296,14 @@ app.get('/blog/:id', async (req, res) => {
   res.render("blog", {data: viewData})
 });
 
-// ========== HANDLE 404 REQUESTS ==========
+
 app.use((req, res) => {
   res.status(404).render("404");
 });
 
-// ========== Setup http server to listen on HTTP_PORT ==========
+
 initialize().then(() => {
-  // Start the server after the files are read and the initialization is done
+
   app.listen(HTTP_PORT, () => {
     console.log("Express http server listening on: " + HTTP_PORT);
   });
