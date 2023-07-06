@@ -13,6 +13,7 @@
  ********************************************************************************/
 
 
+
 const express = require("express");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
@@ -24,8 +25,10 @@ const blogService = require("./blog-service.js");
 
 const app = express();
 
+// Using the 'public' folder as our static folder
 app.use(express.static("public"));
 
+// This will add the property "activeRoute" to "app.locals" whenever the route changes
 app.use(function (req, res, next) {
   let route = req.path.substring(1);
   app.locals.activeRoute =
@@ -37,10 +40,13 @@ app.use(function (req, res, next) {
   next();
 });
 
+// Register handlebars as the rendering engine for views
 app.engine(
   ".hbs",
   exphbs.engine({
     extname: ".hbs",
+    // Handlebars custom helper to create active navigation links
+    // Usage: {{#navLink "/about"}}About{{/navLink}}
     helpers: {
       navLink: function (url, options) {
         return (
@@ -53,6 +59,8 @@ app.engine(
           "</a></li>"
         );
       },
+      // Handlebars custom helper to check for equality
+      // Usage: {{#equal value1 value2}}...{{/equal}}
       equal: function (lvalue, rvalue, options) {
         if (arguments.length < 3)
           throw new Error("Handlebars Helper equal needs 2 parameters");
@@ -70,12 +78,14 @@ app.engine(
 );
 app.set("view engine", ".hbs");
 
+// Configuring Cloudinary
 cloudinary.config({
-  cloud_name: "dis6og4lc",
-  api_key: "145446994168569",
-  api_secret: "SBVfa_1AV6fyYyaoputexhGiqXg",
+  cloud_name: "your_cloud_name",
+  api_key: "your_api_key",
+  api_secret: "your_api_secret",
   secure: true,
 });
+
 const upload = multer();
 
 const HTTP_PORT = process.env.PORT || 8080;
@@ -143,43 +153,27 @@ app.get("/posts", (req, res) => {
   }
 });
 
-app.post("/posts/add", upload.single("featureImage"), (req, res) => {
-  let streamUpload = (req) => {
-    return new Promise((resolve, reject) => {
-      let stream = cloudinary.uploader.upload_stream((error, result) => {
-        if (result) {
-          resolve(result);
-        } else {
-          reject(error);
-        }
-      });
+app.post("/posts/add", upload.single("featureImage"), async (req, res) => {
+  try {
+    let result = await cloudinary.uploader.upload(req.file.path);
+    req.body.featureImage = result.secure_url;
 
-      streamifier.createReadStream(req.file.buffer).pipe(stream);
-    });
-  };
+    let postObject = {
+      body: req.body.body,
+      title: req.body.title,
+      postDate: new Date().toISOString().slice(0, 10),
+      category: req.body.category,
+      featureImage: req.body.featureImage,
+      published: req.body.published === "on",
+    };
 
-  async function uploadImage(req) {
-    try {
-      let uploadedImage = await streamUpload(req);
-      req.body.featureImage = uploadedImage.url;
-      let postObject = {
-        body: req.body.body,
-        title: req.body.title,
-        postDate: new Date().toISOString().slice(0, 10),
-        category: req.body.category,
-        featureImage: req.body.featureImage,
-        published: req.body.published === "true",
-      };
-
+    if (postObject.title) {
       await blogService.addPost(postObject);
-
-      res.redirect("/posts");
-    } catch (err) {
-      res.send(err);
     }
+    res.redirect("/posts");
+  } catch (err) {
+    res.send(err);
   }
-
-  uploadImage(req);
 });
 
 app.get("/posts/add", (req, res) => {
@@ -208,7 +202,7 @@ app.get("/categories", (req, res) => {
     });
 });
 
-app.get('/blog/:id', async (req, res) => {
+app.get("/blog/:id", async (req, res) => {
   let viewData = {};
   try {
     let posts = [];
@@ -225,7 +219,7 @@ app.get('/blog/:id', async (req, res) => {
   try {
     viewData.post = await blogService.getPostById(req.params.id);
   } catch (err) {
-    viewData.message = "no results"; 
+    viewData.message = "no results";
   }
   try {
     let categories = await blogService.getCategories();
