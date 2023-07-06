@@ -23,7 +23,7 @@ const blogData = require("./blog-service.js");
 const {
   initialize,
   getAllPosts,
-  getCategories,
+  getCategories, 
   addPost,
   getPostById,
   getPostsByCategory,
