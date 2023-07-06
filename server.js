@@ -14,7 +14,7 @@
 
 const express = require("express");
 const multer = require("multer");
-const exphbs = require("express-handlebars");
+const exphbs = require("express handlebars");
 const cloudinary = require("cloudinary").v2;
 const streamifier = require("streamifier");
 const path = require("path");
