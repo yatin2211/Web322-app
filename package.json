@@ -1,0 +1,28 @@
+{
+  "name": "web322-app",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Yatin rana",
+  "license": "ISC",
+  "dependencies": {
+    "cloudinary": "^1.37.3",
+    "express": "^4.18.2",
+    "handlebars": "^4.7.7",
+    "multer": "^1.4.5-lts.1",
+    "streamifier": "^0.1.1",
+    "strip-js": "^1.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yatin2211/web322-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yatin2211/web322-app/issues"
+  },
+  "homepage": "https://github.com/yatin2211/web322-app#readme",
+  "description": ""
+}
