@@ -14,52 +14,60 @@
 
 const express = require("express");
 const multer = require("multer");
-const exphbs = require("express handlebars");
 const cloudinary = require("cloudinary").v2;
 const streamifier = require("streamifier");
+const exphbs = require("express-handlebars");
 const path = require("path");
-const blogData = require("./blog-service");
-const stripJs = require('strip-js');
+const stripJs = require("strip-js");
+const blogData = require("./blog-service.js");
+const {
+  initialize,
+  getAllPosts,
+  getCategories,
+  addPost,
+  getPostById,
+  getPostsByCategory,
+  getPostsByMinDate,
+} = require("./blog-service.js");
 
 const app = express();
 
+// Using the 'public' folder as our static folder
 app.use(express.static("public"));
-const hbs = exphbs.create({
-  helpers: {
-    safeHTML: function(context) {
-      return new exphbs.SafeString(stripJs(context));
-    }
-  }
-});
-app.engine(
-  'hbs',
-  exphbs({
-    defaultLayout: 'main',
-    extname: '.hbs',
-    helpers: {
-      safeHTML: function(context) {
-        return new exphbs.SafeString(stripJs(context));
-      }
-    }
-  })
-);
 
+// This will add the property "activeRoute" to "app.locals" whenever the route changes
+app.use(function (req, res, next) {
+  let route = req.path.substring(1);
+  app.locals.activeRoute =
+    "/" +
+    (isNaN(route.split("/")[1])
+      ? route.replace(/\/(?!.*)/, "")
+      : route.replace(/\/(.*)/, ""));
+  app.locals.viewingCategory = req.query.category;
+  next();
+});
+
+// Register handlebars as the rendering engine for views
 app.engine(
   ".hbs",
-  exphbs({
+  exphbs.engine({
     extname: ".hbs",
+    // Handlebars custom helper to create active navigation links
+    // Usage: {{#navLink "/about"}}About{{/navLink}}
     helpers: {
       navLink: function (url, options) {
         return (
-          '<li' +
-          ((url == app.locals.activeRoute) ? ' class="active" ' : '') +
+          "<li" +
+          (url == app.locals.activeRoute ? ' class="active" ' : "") +
           '><a href="' +
           url +
           '">' +
           options.fn(this) +
-          '</a></li>'
+          "</a></li>"
         );
       },
+      // Handlebars custom helper to check for equality
+      // Usage: {{#equal value1 value2}}...{{/equal}}
       equal: function (lvalue, rvalue, options) {
         if (arguments.length < 3)
           throw new Error("Handlebars Helper equal needs 2 parameters");
@@ -75,10 +83,7 @@ app.engine(
     },
   })
 );
-
 app.set("view engine", ".hbs");
-app.set("views", path.join(__dirname, "views"));
-
 
 cloudinary.config({
   cloud_name: "dim1rhbtf",
