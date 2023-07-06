@@ -12,7 +12,8 @@
  *
  ********************************************************************************/
 
-const express = require("express");
+
+    const express = require("express");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const streamifier = require("streamifier");
@@ -111,105 +112,66 @@ app.get("/blog", async (req, res) => {
   res.render("blog", { data: viewData });
 });
 
-app.get("/posts", (req, res) => {
-  if (req.query.category) {
-    blogService
-      .getPostsByCategory(req.query.category)
-      .then((data) => {
-        res.render("posts", { posts: data });
-      })
-      .catch((err) => {
-        res.render("posts", { message: "no results" });
-      });
-  } else if (req.query.minDate) {
-    blogService
-      .getPostsByMinDate(req.query.minDate)
-      .then((data) => {
-        res.render("posts", { posts: data });
-      })
-      .catch((err) => {
-        res.render("posts", { message: "no results" });
-      });
-  } else {
-    blogService
-      .getAllPosts()
-      .then((data) => {
-        res.render("posts", { posts: data });
-      })
-      .catch((err) => {
-        res.render("posts", { message: "no results" });
-      });
+app.get("/posts", async (req, res) => {
+  try {
+    let posts = [];
+    if (req.query.category) {
+      posts = await blogService.getPostsByCategory(req.query.category);
+    } else if (req.query.minDate) {
+      posts = await blogService.getPostsByMinDate(req.query.minDate);
+    } else {
+      posts = await blogService.getAllPosts();
+    }
+    res.render("posts", { posts: posts });
+  } catch (err) {
+    res.render("posts", { message: "no results" });
   }
 });
 
-app.post("/posts/add", upload.single("featureImage"), (req, res) => {
-  let streamUpload = (req) => {
-    return new Promise((resolve, reject) => {
-      let stream = cloudinary.uploader.upload_stream((error, result) => {
-        if (result) {
-          resolve(result);
-        } else {
-          reject(error);
-        }
-      });
-
-      streamifier.createReadStream(req.file.buffer).pipe(stream);
-    });
-  };
-
-  async function upload(req) {
+app.post("/posts/add", upload.single("featureImage"), async (req, res) => {
+  try {
     let result = await streamUpload(req);
-    return result;
+    req.body.featureImage = result.url;
+    let postObject = {
+      body: req.body.body,
+      title: req.body.title,
+      postDate: new Date().toISOString().slice(0, 10),
+      category: req.body.category,
+      featureImage: req.body.featureImage,
+      published: req.body.published,
+    };
+    if (postObject.title) {
+      await blogService.addPost(postObject);
+    }
+    res.redirect("/posts");
+  } catch (err) {
+    res.send(err);
   }
-
-  upload(req)
-    .then((uploaded) => {
-      req.body.featureImage = uploaded.url;
-      let postObject = {};
-
-      postObject.body = req.body.body;
-      postObject.title = req.body.title;
-      postObject.postDate = new Date().toISOString().slice(0, 10);
-      postObject.category = req.body.category;
-      postObject.featureImage = req.body.featureImage;
-      postObject.published = req.body.published;
-
-      if (postObject.title) {
-        blogService.addPost(postObject); // Updated line
-      }
-      res.redirect("/posts");
-    })
-    .catch((err) => {
-      res.send(err);
-    });
 });
 
 app.get("/posts/add", (req, res) => {
   res.render("addPost");
 });
-app.get("/post/:value", (req, res) => {
-  blogService
-    .getPostById(req.params.value)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.send(err);
-    });
+
+app.get("/post/:value", async (req, res) => {
+  try {
+    let post = await blogService.getPostById(req.params.value);
+    res.send(post);
+  } catch (err) {
+    res.send(err);
+  }
 });
 
-app.get("/categories", (req, res) => {
-  blogService
-    .getCategories()
-    .then((data) => {
-      res.render("categories", { categories: data });
-    })
-    .catch((err) => {
-      res.render("categories", { message: "no results" });
-    });
+app.get("/categories", async (req, res) => {
+  try {
+    let categories = await blogService.getCategories();
+    res.render("categories", { categories: categories });
+  } catch (err) {
+    res.render("categories", { message: "no results" });
+  }
 });
 
-app.get('/blog/:id', async (req, res) => {
+app.get("/blog/:id", async (req, res) => {
   let viewData = {};
   try {
     let posts = [];
@@ -226,7 +188,7 @@ app.get('/blog/:id', async (req, res) => {
   try {
     viewData.post = await blogService.getPostById(req.params.id);
   } catch (err) {
-    viewData.message = "no results"; 
+    viewData.message = "no results";
   }
   try {
     let categories = await blogService.getCategories();
