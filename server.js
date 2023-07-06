@@ -20,6 +20,16 @@ const streamifier = require("streamifier");
 const path = require("path");
 const blogData = require("./blog-service");
 const stripJs = require('strip-js');
+const {
+  initialize,
+  getAllPosts,
+  getCategories,
+  addPost,
+  getPostById,
+  getPostsByCategory,
+  getPostsByMinDate,
+} = require("./blog-service.js");
+
 
 const app = express();
 
