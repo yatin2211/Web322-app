@@ -18,7 +18,7 @@ const exphbs = require("express-handlebars");
 const cloudinary = require("cloudinary").v2;
 const streamifier = require("streamifier");
 const path = require("path");
-const blogService = require("./blog-service");
+const blogData = require("./blog-service");
 const stripJs = require('strip-js');
 
 const app = express();
