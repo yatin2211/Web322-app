@@ -158,31 +158,28 @@ app.post("/posts/add", upload.single("featureImage"), (req, res) => {
     });
   };
 
-  async function upload(req) {
-    let result = await streamUpload(req);
-    return result;
+  async function uploadImage(req) {
+    try {
+      let uploadedImage = await streamUpload(req);
+      req.body.featureImage = uploadedImage.url;
+      let postObject = {
+        body: req.body.body,
+        title: req.body.title,
+        postDate: new Date().toISOString().slice(0, 10),
+        category: req.body.category,
+        featureImage: req.body.featureImage,
+        published: req.body.published === "true",
+      };
+
+      await blogService.addPost(postObject);
+
+      res.redirect("/posts");
+    } catch (err) {
+      res.send(err);
+    }
   }
 
-  upload(req)
-    .then((uploaded) => {
-      req.body.featureImage = uploaded.url;
-      let postObject = {};
-
-      postObject.body = req.body.body;
-      postObject.title = req.body.title;
-      postObject.postDate = new Date().toISOString().slice(0, 10);
-      postObject.category = req.body.category;
-      postObject.featureImage = req.body.featureImage;
-      postObject.published = req.body.published;
-
-      if (postObject.title) {
-        blogService.addPost(postObject);
-      }
-      res.redirect("/posts");
-    })
-    .catch((err) => {
-      res.send(err);
-    });
+  uploadImage(req);
 });
 
 app.get("/posts/add", (req, res) => {
