@@ -13,7 +13,6 @@
  ********************************************************************************/
 
 
-
 const express = require("express");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
@@ -89,9 +88,9 @@ app.set("view engine", ".hbs");
 
 // Configuring Cloudinary
 cloudinary.config({
-  cloud_name: "dtjzbh27c",
-  api_key: "352185835558593",
-  api_secret: "XWtpK6nUkH_eDPJIwyaGDNvo1F0",
+  cloud_name: "your_cloud_name",
+  api_key: "your_api_key",
+  api_secret: "your_api_secret",
   secure: true,
 });
 
@@ -134,7 +133,7 @@ app.get("/blog", async (req, res) => {
     viewData.posts = posts;
     viewData.post = post;
   } catch (err) {
-    viewData.message = "no results";
+    viewData.message = "No results found.";
   }
   try {
     // Obtain the full list of "categories"
@@ -142,7 +141,7 @@ app.get("/blog", async (req, res) => {
     // store the "categories" data in the viewData object (to be passed to the view)
     viewData.categories = categories;
   } catch (err) {
-    viewData.categoriesMessage = "no results";
+    viewData.categoriesMessage = "No results found.";
   }
 
   // render the "blog" view with all of the data (viewData)
@@ -159,7 +158,7 @@ app.get("/posts", (req, res) => {
       })
       // Error Handling
       .catch((err) => {
-        res.render("posts", { message: "no results" });
+        res.render("posts", { message: "No results found." });
       });
   }
 
@@ -171,7 +170,7 @@ app.get("/posts", (req, res) => {
       })
       // Error Handling
       .catch((err) => {
-        res.render("posts", { message: "no results" });
+        res.render("posts", { message: "No results found." });
       });
   }
 
@@ -183,7 +182,7 @@ app.get("/posts", (req, res) => {
       })
       // Error Handling
       .catch((err) => {
-        res.render("posts", { message: "no results" });
+        res.render("posts", { message: "No results found." });
       });
   }
 });
@@ -228,6 +227,9 @@ app.post("/posts/add", upload.single("featureImage"), (req, res) => {
       postObject.category = req.body.category;
       postObject.featureImage = req.body.featureImage;
       postObject.published = req.body.published;
+
+      // Adding the post if everything is okay
+      // Only
 
       // Adding the post if everything is okay
       // Only add the post if the entries make sense
