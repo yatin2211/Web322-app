@@ -179,7 +179,7 @@ app.post("/posts/add", upload.single("featureImage"), (req, res) => {
       postObject.published = req.body.published;
 
       if (postObject.title) {
-        blogService.addPost(postObject);
+        blogService.addPost(postObject); // Updated line
       }
       res.redirect("/posts");
     })
