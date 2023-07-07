@@ -21,6 +21,7 @@ const exphbs = require("express-handlebars");
 const path = require("path");
 const stripJs = require("strip-js");
 const blogData = require("./blog-service.js");
+const {initialize,getAllPosts,getCategories,addPost,getPostById,getPostsByCategory,getPostsByMinDate,} = require("./blog-service.js");
 
 const app = express();
 
