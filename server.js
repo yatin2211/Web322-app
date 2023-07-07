@@ -82,7 +82,6 @@ app.engine(
 );
 app.set("view engine", ".hbs");
 
-// Configuring Cloudinary
 cloudinary.config({
   cloud_name: "dis6og4lc",
   api_key: "145446994168569",
@@ -250,7 +249,6 @@ app.get("/categories", (req, res) => {
     .then((data) => {
       res.render("categories", { categories: data });
     })
-    // Error Handling
     .catch((err) => {
       res.render("categories", { message: "no results" });
     });
