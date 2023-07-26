@@ -1,0 +1,18 @@
+
+{{#content "title"}}
+Add Category
+{{/content}}
+
+{{#content "header"}}
+<h2>Add Category</h2>
+{{/content}}
+
+{{#content "body"}}
+<form action="/categories/add" method="post">
+    <div class="form-group">
+        <label for="category">Category:</label>
+        <input type="text" name="category" id="category" class="form-control" autofocus required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Category</button>
+</form>
+{{/content}}

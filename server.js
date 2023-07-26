@@ -69,7 +69,13 @@ app.engine(
       safeHTML: function (context) {
         return stripJs(context);
       },
-    },
+      formatDate: function(dateObj){
+        let year = dateObj.getFullYear();
+        let month = (dateObj.getMonth() + 1).toString();
+        let day = dateObj.getDate().toString();
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2,'0')}`;
+        },
+      }
   })
 );
 app.set("view engine", ".hbs");
@@ -285,6 +291,63 @@ app.get('/blog/:id', async (req, res) => {
   // render the "blog" view with all of the data (viewData)
   res.render("blog", {data: viewData})
 });
+
+app.get("/categories/add", (req, res) => {
+  res.render("addCategory");
+});
+
+app.post("/categories/add", (req, res) => {
+  let categoryData = req.body;
+  for (let key in categoryData) {
+      if (categoryData[key] === "") {
+          categoryData[key] = null;
+      }
+  }
+
+  addCategory(categoryData)
+      .then(() => {
+          res.redirect("/categories");
+      })
+      .catch((error) => {
+          res.status(500).send("Unable to add category");
+      });
+});
+
+app.get("/categories/delete/:id", (req, res) => {
+  let categoryId = req.params.id;
+
+  deleteCategoryById(categoryId)
+      .then(() => {
+          res.redirect("/categories");
+      })
+      .catch((error) => {
+          res.status(500).send("Unable to Remove Category / Category not found");
+      });
+});
+
+app.get("/posts/delete/:id", (req, res) => {
+  let postId = req.params.id;
+
+  deletePostById(postId)
+      .then(() => {
+          res.redirect("/posts");
+      })
+      .catch((error) => {
+          res.status(500).send("Unable to Remove Post / Post not found");
+      });
+});
+app.get("/posts/delete/:id", (req, res) => {
+  let postId = req.params.id;
+
+  deletePostById(postId)
+    .then(() => {
+      res.redirect("/posts");
+    })
+    .catch((error) => {
+      res.status(500).send("Unable to Remove Post / Post not found");
+    });
+});
+
 
 
 app.use((req, res) => {
