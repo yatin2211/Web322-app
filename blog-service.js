@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+const { Sequelize, DataTypes } = require("sequelize");
 var sequelize = new Sequelize("dyzlaeek", "dyzlaeek", "hNE3cDpkOfNIgxMncTa82WUkQf2xpLWy", {
 host: "stampy.db.elephantsql.com",
 dialect: 'postgres',
