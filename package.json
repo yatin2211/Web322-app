@@ -8,7 +8,7 @@
   },
   "author": "Yatin rana",
   "license": "ISC",
- "dependencies": {
+  "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
     "client-sessions": "^0.8.0",
@@ -23,7 +23,14 @@
     "sequelize": "^6.21.3",
     "streamifier": "^0.1.1",
     "strip-js": "^1.2.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yatin2211/web322-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yatin2211/web322-app/issues"
+  },
+  "homepage": "https://github.com/yatin2211/web322-app#readme",
+  "description": ""
 }
-
- 
