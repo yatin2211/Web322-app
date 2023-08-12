@@ -26,13 +26,4 @@
   }
 }
 
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yatin2211/web322-app.git"
-  },
-  "bugs": {
-    "url": "https://github.com/yatin2211/web322-app/issues"
-  },
-  "homepage": "https://github.com/yatin2211/web322-app#readme",
-  "description": ""
-}
+ 
