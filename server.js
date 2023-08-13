@@ -26,8 +26,6 @@ import {
   getCategories,
   getPostById,
   initialize,
-} from "./blog-service.js";
-import {
   getAllPosts,
   addPost,
   getPostsByCategory,
