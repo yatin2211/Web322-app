@@ -1,0 +1,21 @@
+{{!-- new view simply renders the  table(login Date/Time,Client information) using the globally available session.user.loginHistory object --}}
+
+<div>
+    <h1>{session.user.userName} ({session.user.email}) History</h1>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Login Date/Time</th>
+                <th>Client Information</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each session.user.loginHistory}}
+            <tr>
+                <td>{{session.user.loginHistory.loginTime}}</td>
+                <td>{{session.user.loginHistory.userAgent}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

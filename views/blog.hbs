@@ -1,40 +1,40 @@
 <div class="row">
     <section class="main col-md-9">
-        {{#if data.post}}
-        <article>
-            <h2>{{data.post.title}}</h2>
-            <img src="{{data.post.featureImage}}" alt="feature Image" style="width:100%" />
-            <br /><br />
-            {{#safeHTML data.post.body}}{{/safeHTML}}
-            <br /><br />
-            <strong>Category:</strong> {{data.post.category}}<br />
-            <strong>Last Updated:</strong> {{data.post.postDate}}
-
-        </article>
+        {{#if data.posts}}
+            <article>
+                <h2><strong>{{data.post.title}}</strong></h2>
+                  <img src="https://preview.redd.it/cool-fan-made-poster-for-oliveira-vs-makhachev-v0-zghx9qxfr2o91.jpg?width=640&crop=smart&auto=webp&s=f1cfb62704f383192c20703aa6f91fd97a0b8f3e" alt="feature Image" style="width:100%" />
+ <br /><br />
+                {{#safeHTML data.post.body}}{{/safeHTML}}
+                <br /><br />
+                <strong>Category:</strong> {{data.post.category}}<br />
+                <strong>Last Updated:</strong> {{data.post.postDate}}
+            </article>
         {{else}}
-        <h2>{{data.message}}</h2>
-        <p>No Record Found</p>
+           <div class="col-md-12 text-center">
+              <h2>{{data.message}}</h2>
+              <p>Please try another Post / Category</p>
+                 </div>
         {{/if}}
     </section>
     <aside class="col-md-3">
         <br /><br />
         {{#if data.posts}}
-        <h4>Posts</h4>
-
-        <ul class="list-group">
-            {{#each data.posts}}
-            <a href="/blog/{{this.id}}?category={{../viewingCategory}}" class="list-group-item">{{this.title}}</a>
-            {{/each}}
-        </ul>
+            <h4>Posts</h4>
+            <ul class="list-group">
+                {{#each data.posts}}
+                    <a href="/blog/{{id}}?category={{../viewingCategory}}" class="list-group-item">{{title}}</a>
+                {{/each}}
+            </ul>
         {{/if}}
-        {{#if data.categories}}
-        <h4>Categories</h4>
 
-        <ul class="list-group">
-            {{#each data.categories}}
-            <a href="/blog?category={{this.id}}" class="list-group-item">{{this.category}}</a>
-            {{/each}}
-        </ul>
+        {{#if data.posts}}
+            <h4>Categories</h4>
+            <ul class="list-group">
+                {{#each data.categories}}
+                    <a href="/blog?category={{id}}" class="list-group-item">{{category}}</a>
+                {{/each}}
+            </ul>
         {{/if}}
     </aside>
 </div>

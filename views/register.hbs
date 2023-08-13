@@ -1,47 +1,52 @@
-<div class="row">
-    <div class="col-md-12">
+{{!-- • This (new) view must consist of the "register form" which will allow the
+user to submit new credentials (using POST) to the "/register" POST route.
+IMPORTANT NOTE: this form is only visible if successMessage was not rendered
+with the view (refer to the "/register" POST route above for more information).
+If successMessage was rendered with the view, we will show different elements.
+--}}
 
-        <h2>Register</h2>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Register</title>
+    </head>
+    <body>
 
-        <br>
+        {{!-- • Above the form, we must have a space available for error output:
+        Show the element: <div class="alert alert-danger"> <strong>Error:</strong>
+            {{errorMessage}}</div> only if there is an errorMessage rendered
+        with the view. --}}
+        <h1>Register</h1>
         {{#if errorMessage}}
-            <div class="alert alert-danger"> <strong>Error:</strong> {{errorMessage}}</div>
+        <div class="alert alert-danger">
+            <strong>Error:</strong> {{errorMessage}}
+        </div>
         {{/if}}
+
+        {{!-- only if there is a successMessage rendered with the view (this
+        will be rendered instead of the form. --}}
         {{#if successMessage}}
-            <div class="alert alert-success"> <strong>Success:</strong> {{successMessage}}</div>
-            <a class="btn btn-success pull-right" href="/login">&nbsp;&nbsp;&nbsp;Proceed to Log
-                in&nbsp;&nbsp;&nbsp;</a>
-            <br /><br /><br />
-        {{else}}
-            <form method="POST" action="/register">
-                <fieldset>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <input class="form-control" placeholder="User Name" required="true" name="userName"
-                                    type="text" value="{{#if userName}}{{userName}}{{/if}}">
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Password" required="true" name="password"
-                                    type="password" value="">
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Confirm Password" required="true"
-                                    name="password2" type="password" value="">
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Email" required="true" name="email"
-                                    type="email" value="">
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <hr>
-
-                <input type="submit" class="btn btn-primary pull-right" value="Register"><br><br><br>
-
-            </form>
+        <div class="alert alert-success"> <strong>Success:</strong>
+            {{successMessage}}</div><a class="btn btn-success pull-right"
+            href="/login">&nbsp;&nbsp;&nbsp;Proceed to Log in&nbsp;&nbsp;&nbsp;</a><br /><br /><br />
         {{/if}}
-    </div>
-</div>
+
+        {{!-- • Next, we must have a form that will allow the user to submit
+        their credentials (using POST) to the "/register" POST route: --}}
+        <form action="/register" method="POST">
+            <label for="userName">User Name</label>
+            <input type="text" name="userName" placeholder:"User Name"
+                id="userName" required>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+            <label for="password2">Confirm Password</label>
+            <input type="password" name="password2" id="password2" required>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required>
+            <button type="submit">Register</button>
+        </form>
+
+    </body>
+</html>
