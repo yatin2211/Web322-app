@@ -1,10 +1,10 @@
 /*********************************************************************************
- * WEB322 – Assignment 05
+ * WEB322 – Assignment 06
  * I declare that this assignment is my own work in accordance with Seneca Academic Policy.
  * No part of this assignment has been copied manually or electronically from any other source
  * (including web sites) or distributed to other students.
  *
- * Name: __________Yatin rana___________ Student ID: _____167501212_________ Date:7/26/23 ________________
+ * Name: __________Yatin rana___________ Student ID: _____167501212_________ Date:8/13/23 ________________
  *
  * Cyclic Web App URL:https://unusual-teal-waistcoat.cyclic.app/about
  *
