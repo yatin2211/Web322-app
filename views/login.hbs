@@ -1,30 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>login</title>
-    </head>
-    <body>
-       {{!-- •	Above the form, we must have a space available for error output:  Show the element: <div class="alert alert-danger"> <strong>Error:</strong> {{errorMessage}}</div> only if there is an errorMessage rendered with the view.   --}}
-        <h1>Login</h1>
+<div class="row">
+    <div class="col-md-12">
+        <h2>Log In</h2><hr />
         {{#if errorMessage}}
-        <div class="alert alert-danger">
-            <strong>Error:</strong> {{errorMessage}}
-        </div>
-        {{/if}}
-        {{!-- •	Next, we must have a form that will allow the user to submit their credentials (using POST) to the "/login" POST route: --}}
-
-        <form action="/login" method="POST">
-            <label for="userName">User Name</label>
-            <input type="text" name="userName" id="userName" required>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required>
-            <button type="submit">Login</button>
+            <div class="alert alert-danger"> <strong>Error:</strong> {{errorMessage}}</div> 
+        {{else}}
+        <form method="post" action="/login">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input class="form-control" id="userName" name="userName" type="text" placeholder="User Name" required value=""
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input class="form-control" id="password" name="password" type="password" placeholder="Password" required />
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-success pull-right" value="Login" />
         </form>
-{{!--         
-            <input type="submit" value="Login">
-        </form> --}}
-
-    </body>
-</html>
+        {{/if}}
+    </div>
+</div>
