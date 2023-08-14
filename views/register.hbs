@@ -1,9 +1,4 @@
-{{!-- • This (new) view must consist of the "register form" which will allow the
-user to submit new credentials (using POST) to the "/register" POST route.
-IMPORTANT NOTE: this form is only visible if successMessage was not rendered
-with the view (refer to the "/register" POST route above for more information).
-If successMessage was rendered with the view, we will show different elements.
---}}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,10 +9,6 @@ If successMessage was rendered with the view, we will show different elements.
     </head>
     <body>
 
-        {{!-- • Above the form, we must have a space available for error output:
-        Show the element: <div class="alert alert-danger"> <strong>Error:</strong>
-            {{errorMessage}}</div> only if there is an errorMessage rendered
-        with the view. --}}
         <h1>Register</h1>
         {{#if errorMessage}}
         <div class="alert alert-danger">
@@ -25,16 +16,13 @@ If successMessage was rendered with the view, we will show different elements.
         </div>
         {{/if}}
 
-        {{!-- only if there is a successMessage rendered with the view (this
-        will be rendered instead of the form. --}}
         {{#if successMessage}}
         <div class="alert alert-success"> <strong>Success:</strong>
             {{successMessage}}</div><a class="btn btn-success pull-right"
             href="/login">&nbsp;&nbsp;&nbsp;Proceed to Log in&nbsp;&nbsp;&nbsp;</a><br /><br /><br />
         {{/if}}
 
-        {{!-- • Next, we must have a form that will allow the user to submit
-        their credentials (using POST) to the "/register" POST route: --}}
+    
         <form action="/register" method="POST">
             <label for="userName">User Name</label>
             <input type="text" name="userName" placeholder:"User Name"

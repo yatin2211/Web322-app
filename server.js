@@ -1,5 +1,5 @@
 /*********************************************************************************
- * WEB322 – Assignment 06
+ * WEB322 – Assignment 05
  * I declare that this assignment is my own work in accordance with Seneca Academic Policy.
  * No part of this assignment has been copied manually or electronically from any other source
  * (including web sites) or distributed to other students.
@@ -26,6 +26,8 @@ import {
   getCategories,
   getPostById,
   initialize,
+} from "./blog-service.js";
+import {
   getAllPosts,
   addPost,
   getPostsByCategory,
@@ -420,7 +422,3 @@ initialize().then(() => {
     });
 });
 
-//Once the code for auth-service.js is complete, we need to add its initialize method to the promise chain surrounding our app.listen() function call within our server.js file
-
-// Path: server.js
-// Compare this snippet from auth-service.js:

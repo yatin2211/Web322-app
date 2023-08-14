@@ -10,15 +10,15 @@ const userSchema = new Schema({
   loginHistory: [{ dateTime: Date, userAgent: String }],
 });
 
-let User; // to be defined on new connection (see initialize)
+let User;
 
 module.exports.initialize = function () {
   return new Promise(function (resolve, reject) {
     let db = mongoose.createConnection(
-      "mongosh mongodb+srv://senecaweb.tde9f47.mongodb.net/ --apiVersion 1 --username yatinrana9878"
+      "mongodb+srv://yatinrana9878:Yati@0811@senecaweb.tde9f47.mongodb.net/?retryWrites=true&w=majority"
     );
     db.on("error", (err) => {
-      reject(err); // reject the promise with the provided error
+      reject(err);
     });
     db.once("open", () => {
       User = db.model("users", userSchema);
@@ -89,27 +89,6 @@ module.exports.checkUser = function (userData) {
             .catch((err) => {
               reject("Incorrect Password for user: " + userData.username);
             });
-
-          //   if (users[0].password == userData.password) {
-          //     users[0].loginHistory.push({
-          //       dateTime: new Date().toString(),
-          //       userAgent: userData.userAgent,
-          //     });
-
-          //     User.update(
-          //       { username: users[0].username },
-          //       { $set: { loginHistory: users[0].loginHistory } }
-          //     )
-          //       .exec()
-          //       .then(() => {
-          //         resolve(users[0]);
-          //       })
-          //       .catch((err) => {
-          //         reject("There was an error verifying the user: " + err);
-          //       });
-          //   } else {
-          //     reject("Incorrect Password for user: " + userData.username);
-          //   }
         }
       })
       .catch((err) => {
